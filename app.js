@@ -15,6 +15,7 @@ const contactContent =
 const app = express();
 const posts = app.set("view engine", "ejs");
 let entries = require(__dirname + "/entry.js");
+const _ = require("lodash");
 let entryPosts = [];
 
 app.use(express.urlencoded({ extended: true }));
@@ -28,10 +29,11 @@ app.get("/", function (req, res) {
 });
 
 app.get("/posts/:entry", function (req, res) {
-  const postTitle = req.params.entry;
+  const postTitle = _.lowerCase(req.params.entry);
 
   entryPosts.forEach(function (post) {
-    if (post.title === postTitle) {
+    const postArrayTitle = _.lowerCase(post.title);
+    if (postTitle === postArrayTitle) {
       console.log("Match found!");
     }
   });
@@ -63,3 +65,5 @@ app.post("/compose", function (req, res) {
 app.listen(5000, function () {
   console.log("Server started on port 5000");
 });
+
+//use lodash to make smaller letters and hyphens acceptable in url
