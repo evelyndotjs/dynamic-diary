@@ -39,7 +39,6 @@ app.get("/posts/:entry", function (req, res) {
         postArrayTitle: post.title,
         postArrayContent: post.content,
       });
-      res.redirect("/post/:entry");
     }
   });
 });
