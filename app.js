@@ -2,7 +2,6 @@
 
 const express = require("express");
 const ejs = require("ejs");
-const { indexOf } = require("lodash");
 
 const homeStartingContent =
   "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
@@ -15,6 +14,7 @@ const contactContent =
 const app = express();
 const posts = app.set("view engine", "ejs");
 let entries = require(__dirname + "/entry.js");
+const _ = require("lodash");
 let entryPosts = [];
 
 app.use(express.urlencoded({ extended: true }));
@@ -28,11 +28,18 @@ app.get("/", function (req, res) {
 });
 
 app.get("/posts/:entry", function (req, res) {
-  const postTitle = req.params.entry;
+  const postTitle = _.lowerCase(req.params.entry);
 
   entryPosts.forEach(function (post) {
-    if (post.title === postTitle) {
-      console.log("Match found!");
+    const postArrayTitle = _.lowerCase(post.title);
+    const postArrayContent = _.lowerCase(post.content);
+
+    if (postArrayTitle === postTitle) {
+      res.render("post", {
+        postArrayTitle: post.title,
+        postArrayContent: post.content,
+      });
+      res.redirect("/post/:entry");
     }
   });
 });

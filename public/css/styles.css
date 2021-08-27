@@ -41,3 +41,10 @@
 .width {
   width: 60%;
 }
+
+.blog-content {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 70%;
+}
